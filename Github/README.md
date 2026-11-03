@@ -96,7 +96,7 @@ You'll want a free account for the [bonus section](#9-bonus-your-own-repo-commit
 2. Pick a professional-ish username. Employers *will* look at your GitHub profile someday.
 3. Send me your username.
 
-> **If this repo is private:** I'll need to add you as a collaborator. You'll get an email invite. Accept it, and then the repo will show up for you. Git will ask you to sign in the first time you clone.
+> This repo is public, so you don't need an account just to browse, clone, or pull it.
 
 ---
 
@@ -493,7 +493,7 @@ GitHub doesn't accept your account password on the command line anymore. Use one
 
 ### `Repository not found` when cloning
 
-Either the URL has a typo, or the repo is private and you haven't accepted the collaborator invite yet. Check your email, then try again.
+The URL probably has a typo. Copy it straight from the green **Code** button on the repo page and try again.
 
 ### I messed something up and want a fresh copy
 
