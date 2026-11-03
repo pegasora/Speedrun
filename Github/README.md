@@ -4,6 +4,8 @@ This guide covers everything you need to get this repository onto your computer,
 
 > **TL;DR:** Install Git, run `git clone https://github.com/pegasora/Speedrun.git`, open the folder in VS Code, and run `git pull` whenever I tell you I've added new stuff.
 
+> 🪟 **This guide is written for Windows.** Commands are shown for **PowerShell**, the default terminal in Windows and in VS Code. They work the same in Git Bash. Wherever **Linux / WSL2** or **macOS** does something differently, there's a note. In commands, `~` means your home folder, which on Windows is `C:\Users\<you>`.
+
 ## Contents
 
 1. [What are Git and GitHub?](#1-what-are-git-and-github)
@@ -45,13 +47,14 @@ This guide covers everything you need to get this repository onto your computer,
               │  git clone (once)
               │  git pull  (whenever there's new stuff)
               ▼
-   ┌──────────────────────┐
-   │  Your computer       │   ← You read, run code, and work here
-   │  ~/Projects/Speedrun │
-   └──────────────────────┘
+   ┌──────────────────────────────┐
+   │  Your computer               │   ← You read, run code, and work here
+   │  C:\Users\<you>\Projects\    │
+   │    Speedrun\                 │
+   └──────────────────────────────┘
 ```
 
-For this repo, information flows **one way**: I add material and push it to GitHub, and you **pull** it down. You won't be pushing anything to this repo.
+For this repo, information flows **one way**: I add material and push it to GitHub, and you **pull** it down. You won't be pushing anything to this repo. (If you want a copy you *can* push your own work to and still get my updates, see [forking in section 8](#option-b-fork-this-repo).)
 
 ---
 
@@ -71,7 +74,7 @@ You'll hear these words a lot. Don't memorize them now. Come back here when one 
 | **Working directory** | The actual files in the folder on your computer. |
 | **Staging (`git add`)** | Choosing which changes go into your next commit. |
 | **Merge conflict** | When Git can't automatically combine two sets of changes to the same lines. See [Troubleshooting](#12-troubleshooting). |
-| **Fork** | Your own copy of someone else's repo *on GitHub*. Not needed here. |
+| **Fork** | Your own copy of someone else's repo *on GitHub*. Optional. See [Option B in section 8](#option-b-fork-this-repo). |
 | **README** | A file (usually `README.md`) that GitHub shows automatically when you open a folder. |
 | **Markdown (`.md`)** | The simple formatting language READMEs are written in. See [section 10](#10-markdown-and-readmes). |
 
@@ -104,35 +107,56 @@ You'll want a free account for the [bonus section](#9-bonus-your-own-repo-commit
 
 Pick your operating system:
 
-### Windows
+### Windows (do this one)
+
+**Option 1: Installer**
 
 1. Download **Git for Windows** from [git-scm.com/downloads](https://git-scm.com/downloads).
 2. Run the installer. **The default options are fine.** Just keep clicking Next.
    - When it asks for a default editor, you can pick **Visual Studio Code** if you have it installed.
-3. This installs **Git Bash**, a terminal for running Git commands. You can also use Git from PowerShell or the VS Code terminal.
+   - Leave **Git Credential Manager** enabled. It handles signing in to GitHub for you later.
 
-### macOS
+**Option 2: winget** (Windows' built-in package manager). Open PowerShell and run:
 
-Open the **Terminal** app and run:
-
-```bash
-git --version
+```powershell
+winget install --id Git.Git -e --source winget
 ```
 
-If Git isn't installed, macOS will pop up a prompt to install the **Command Line Developer Tools**. Click **Install**. (Alternatively, if you use [Homebrew](https://brew.sh/): `brew install git`.)
+Either way, you get Git in **PowerShell** and the **VS Code terminal**, plus **Git Bash**, a Linux-style terminal. Use whichever you like. This guide uses PowerShell.
 
-### Linux (Ubuntu / Debian)
+> **Opening PowerShell:** Press the **Windows key**, type `PowerShell`, and press Enter. Or, in File Explorer, right-click inside a folder and choose **Open in Terminal**. That opens PowerShell already in that folder.
+
+### Linux and WSL2
+
+**WSL2** (Windows Subsystem for Linux) runs a real Ubuntu install inside Windows. You'll probably want it later for things like ROS 2. You don't need it for this repo yet.
+
+To install WSL2, open PowerShell **as Administrator** (right-click PowerShell → **Run as administrator**) and run:
+
+```powershell
+wsl --install
+```
+
+Restart when it asks, then open **Ubuntu** from the Start menu and create a Linux username and password.
+
+Inside Ubuntu (WSL2) or any Ubuntu/Debian machine, install Git with:
 
 ```bash
 sudo apt update
 sudo apt install git
 ```
 
+> **WSL2 has its own separate Git and files.** Git installed on Windows and Git installed inside WSL2 are two different installs. If you work inside WSL2, clone repos into your Linux home folder (`~/Projects`, which is `/home/<you>/Projects`), *not* under `/mnt/c/...`. It's much faster.
+> Microsoft's guide: [Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
+
+### macOS
+
+Open the **Terminal** app and run `git --version`. If Git isn't installed, macOS will offer to install the **Command Line Developer Tools**. Click **Install**. (Or, with [Homebrew](https://brew.sh/): `brew install git`.)
+
 ### Check that it worked
 
-Open a **new** terminal window and run:
+Open a **new** PowerShell window (close any that were open before installing) and run:
 
-```bash
+```powershell
 git --version
 ```
 
@@ -142,7 +166,7 @@ You should see something like `git version 2.x.x`. If you get "command not found
 
 Git attaches your name and email to commits. You only need this if you start making commits (see [section 9](#9-bonus-your-own-repo-commit-and-push)), but it's easy to do now:
 
-```bash
+```powershell
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
@@ -159,32 +183,37 @@ Make a folder where all your coding projects will live. For example:
 
 | OS | Suggested folder |
 |---|---|
-| Windows | `C:\Users\<you>\Projects` |
-| macOS / Linux | `~/Projects` (which is `/Users/<you>/Projects` or `/home/<you>/Projects`) |
+| **Windows** | **`C:\Users\<you>\Projects`** (in PowerShell, that's `~/Projects`) |
+| Linux / WSL2 | `~/Projects`, which is `/home/<you>/Projects` |
+| macOS | `~/Projects`, which is `/Users/<you>/Projects` |
 
-> Avoid putting projects inside OneDrive, iCloud, or Dropbox folders. Sync tools and Git don't always get along.
+> ⚠️ **Windows: don't use Documents or Desktop.** On many Windows PCs, those folders are synced to **OneDrive**, and OneDrive and Git don't get along. It can lock files, create duplicate copies, and corrupt the repo. `C:\Users\<you>\Projects` is outside OneDrive. The same goes for iCloud and Dropbox folders.
 
 ### Step 2: Open a terminal in that folder
 
-- **Windows:** Open Git Bash (or PowerShell) and run `cd ~/Projects` (Git Bash) or `cd $HOME\Projects` (PowerShell).
-- **macOS / Linux:** Open Terminal and run `cd ~/Projects`.
+Open **PowerShell** and run:
 
-If the folder doesn't exist yet, create it first with `mkdir Projects` from your home folder.
+```powershell
+mkdir ~/Projects     # only the first time, to create the folder
+cd ~/Projects
+```
+
+These exact commands also work in Git Bash, Linux / WSL2, and macOS.
 
 ### Step 3: Clone
 
-```bash
+```powershell
 git clone https://github.com/pegasora/Speedrun.git
 ```
 
 This creates a `Speedrun` folder containing everything in the repo. It might take a minute because of the PDFs.
 
-```bash
+```powershell
 cd Speedrun
-ls        # (or `dir` in PowerShell) — you should see Python, PLCs, README.md, etc.
+ls        # you should see Github, Python, PLCs, README.md, etc.
 ```
 
-That's it. You now have the whole repo on your computer.
+That's it. You now have the whole repo on your computer, at `C:\Users\<you>\Projects\Speedrun`. You can also open that folder in File Explorer (`explorer .` opens the current folder).
 
 ### Alternative: GitHub Desktop
 
@@ -205,33 +234,42 @@ If you haven't installed VS Code yet, see the [VS Code section of the Python REA
 **Option A: from VS Code**
 
 1. Open VS Code.
-2. **File → Open Folder…** (on macOS: **File → Open…**).
+2. **File → Open Folder…**
 3. Select the `Speedrun` folder you cloned and click **Open**.
 4. If VS Code asks *"Do you trust the authors of the files in this folder?"*, click **Yes, I trust the authors**.
 
 **Option B: from the terminal**
 
-```bash
+```powershell
 cd ~/Projects/Speedrun
 code .
 ```
 
 The `.` means "this folder."
 
-> **macOS:** If `code` isn't found, open VS Code, press `Cmd+Shift+P`, type **Shell Command: Install 'code' command in PATH**, and press Enter. Then open a new terminal.
-> **Windows:** The installer adds `code` automatically if you leave "Add to PATH" checked.
+**Option C: from File Explorer**
+
+Right-click the `Speedrun` folder and choose **Open with Code**. (On Windows 11, you may need to click **Show more options** first.)
+
+> **Windows VS Code install tips:** During setup, leave **Add to PATH** checked so `code .` works, and check both **Add "Open with Code" action to Windows Explorer** boxes for Option C. If you skipped these, just re-run the installer.
+>
+> **WSL2:** Install the [WSL extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl). Then running `code .` in the Ubuntu terminal opens VS Code on Windows, connected to your Linux files.
+>
+> **macOS:** If `code` isn't found, press `Cmd+Shift+P` in VS Code and run **Shell Command: Install 'code' command in PATH**.
 
 ### Getting around in VS Code
 
 | What | Where / shortcut |
 |---|---|
-| **Explorer** (file tree) | Left sidebar, top icon, or `Ctrl+Shift+E` / `Cmd+Shift+E` |
-| **Preview a README** nicely formatted | Open the `.md` file, then `Ctrl+Shift+V` / `Cmd+Shift+V` (or right-click the tab → **Open Preview**) |
-| **Side-by-side preview** | `Ctrl+K V` / `Cmd+K V` |
+| **Explorer** (file tree) | Left sidebar, top icon, or `Ctrl+Shift+E` |
+| **Preview a README** nicely formatted | Open the `.md` file, then `Ctrl+Shift+V` (or right-click the tab → **Open Preview**) |
+| **Side-by-side preview** | `Ctrl+K V` |
 | **Built-in terminal** | **Terminal → New Terminal**, or `` Ctrl+` `` |
-| **Command Palette** (search every command) | `Ctrl+Shift+P` / `Cmd+Shift+P` |
-| **Quick open a file** by name | `Ctrl+P` / `Cmd+P` |
-| **Source Control** (Git) panel | Left sidebar, branch icon, or `Ctrl+Shift+G` / `Cmd+Shift+G` |
+| **Command Palette** (search every command) | `Ctrl+Shift+P` |
+| **Quick open a file** by name | `Ctrl+P` |
+| **Source Control** (Git) panel | Left sidebar, branch icon, or `Ctrl+Shift+G` |
+
+*On macOS, use `Cmd` instead of `Ctrl`.*
 
 Links in the README preview work too, so you can click around the repo the same way you would on GitHub.
 
@@ -250,7 +288,7 @@ More detail: [Source Control in VS Code](https://code.visualstudio.com/docs/sour
 
 I'll keep adding material, like new assignments, notes, and sections. To get the latest version:
 
-```bash
+```powershell
 cd ~/Projects/Speedrun
 git pull
 ```
@@ -270,7 +308,7 @@ Or in VS Code, click the **sync** button in the bottom-left corner, or **Source 
 - **Pull at the start of each work session.**
 - Run `git status` any time you're unsure what's going on. It tells you if you've changed anything and whether you're behind.
 - To see what I've added recently:
-  ```bash
+  ```powershell
   git log --oneline -10
   ```
 
@@ -278,12 +316,23 @@ Or in VS Code, click the **sync** button in the bottom-left corner, or **Source 
 
 ## 8. Where to put your own work
 
+You have two options. Either one works, so pick whichever makes more sense to you.
+
+| | Option A: Separate folder | Option B: Fork this repo |
+|---|---|---|
+| Your work lives… | In its own folder or repo, next to Speedrun | Inside your own copy of Speedrun |
+| Getting my updates | `git pull` | **Sync fork** on GitHub (or `git fetch upstream`), then `git pull` |
+| Backing up your work | Optional, by making it its own repo ([section 9](#9-bonus-your-own-repo-commit-and-push)) | Built in. You push to your fork. |
+| Complexity | Simplest | A little more Git, but good practice |
+
+### Option A: Keep your work in a separate folder
+
 **Don't edit files inside the Speedrun folder.** If you edit a file and I later change the same file, `git pull` will complain (see [Troubleshooting](#12-troubleshooting)). Treat this repo as **read-only reference material**.
 
 Instead, keep your own exercises, assignment solutions, and experiments in a **separate folder**:
 
 ```
-~/Projects/
+C:\Users\<you>\Projects\
 ├── Speedrun/          ← this repo (read-only; just pull)
 └── my-internship/     ← YOUR work
     ├── python-crash-course/
@@ -294,6 +343,136 @@ Instead, keep your own exercises, assignment solutions, and experiments in a **s
 If you want to run or modify something from Speedrun, **copy it** into your own folder first.
 
 Even better: make `my-internship` its own Git repo. See the next section.
+
+### Option B: Fork this repo
+
+A **fork** is your own copy of this repo on GitHub, under your account. You can add your own work to it and push to it, and you can still pull in my updates whenever I add material.
+
+With a fork, there are **two** remotes:
+
+| Remote name | Points to | You… |
+|---|---|---|
+| `origin` | **Your fork**, `github.com/<your-username>/Speedrun` | Push your work here, and pull from here |
+| `upstream` | **My repo**, `github.com/pegasora/Speedrun` | Only pull from here to get my updates |
+
+```
+   ┌────────────────────────────┐
+   │  pegasora/Speedrun         │   upstream (my repo)
+   └─────────────┬──────────────┘
+                 │  Sync fork  /  git fetch upstream
+                 ▼
+   ┌────────────────────────────┐
+   │  <your-username>/Speedrun  │   origin (your fork)
+   └──────┬─────────────▲───────┘
+  git pull│             │git push
+          ▼             │
+   ┌────────────────────────────┐
+   │  Your computer             │
+   │  C:\Users\<you>\Projects\  │
+   │    Speedrun\               │
+   └────────────────────────────┘
+```
+
+#### Step 1: Create the fork
+
+1. Sign in to GitHub ([section 3](#creating-a-github-account)).
+2. Go to [github.com/pegasora/Speedrun](https://github.com/pegasora/Speedrun).
+3. Click **Fork** (top right), leave the defaults, then click **Create fork**.
+
+You now have `github.com/<your-username>/Speedrun`.
+
+> Forks of public repos are public, so don't put anything private in it.
+
+#### Step 2: Clone *your fork*
+
+Clone **your fork**, not mine:
+
+```powershell
+cd ~/Projects
+git clone https://github.com/<your-username>/Speedrun.git
+cd Speedrun
+```
+
+> **Already cloned my repo?** You don't need to start over. Rename my repo to `upstream` and point `origin` at your fork:
+> ```powershell
+> git remote rename origin upstream
+> git remote add origin https://github.com/<your-username>/Speedrun.git
+> git fetch origin
+> git branch --set-upstream-to=origin/main main
+> ```
+
+#### Step 3: Connect it to my repo (`upstream`)
+
+```powershell
+git remote add upstream https://github.com/pegasora/Speedrun.git
+git remote -v
+```
+
+You should see both remotes:
+
+```
+origin    https://github.com/<your-username>/Speedrun.git (fetch)
+origin    https://github.com/<your-username>/Speedrun.git (push)
+upstream  https://github.com/pegasora/Speedrun.git (fetch)
+upstream  https://github.com/pegasora/Speedrun.git (push)
+```
+
+You only do this once.
+
+#### Step 4: Add your work in your own folder
+
+Put **all** your work in a folder that I'll never touch, like `my-work/` at the top of the repo:
+
+```
+Speedrun/
+├── my-work/            ← YOUR stuff goes here
+│   ├── python-crash-course/
+│   ├── machine-vision/
+│   └── plc-notes/
+├── Github/
+├── Python/
+├── PLCs/
+└── ...
+```
+
+Keep my files as they are. If you want to change something of mine, copy it into `my-work/` and change the copy. As long as you only edit inside `my-work/`, syncing will never cause a conflict.
+
+#### Step 5: Commit and push your work
+
+```powershell
+git add my-work/
+git commit -m "Add chapter 3 exercises"
+git push
+```
+
+This pushes to **your fork** (`origin`), not to my repo.
+
+#### Step 6: Get my updates (sync)
+
+**Commit your own work first**, then pick one of these.
+
+**On GitHub (easiest):**
+
+1. Go to your fork's page on GitHub.
+2. Click **Sync fork**, then **Update branch**.
+3. On your computer, run:
+   ```powershell
+   git pull
+   ```
+
+**From the terminal:**
+
+```powershell
+git fetch upstream          # download my new commits
+git merge upstream/main     # merge them into your main branch
+git push                    # update your fork on GitHub too
+```
+
+**In VS Code:** **Source Control → … → Pull, Push → Pull from…**, then choose `upstream`, then `upstream/main`. Then click **Sync Changes** to push the result to your fork.
+
+> ⚠️ **On GitHub:** If **Sync fork** ever offers **Discard N commits**, **don't click it**. That deletes your work from the fork. It only happens when your changes conflict with mine (usually because a file outside `my-work/` was edited). Sync from the terminal instead and follow the [merge conflict steps](#conflict-content-merge-conflict-in-file), or ask me.
+
+> **Don't open pull requests to my repo** unless I ask you to. GitHub sometimes shows a **Contribute** button on forks. You can ignore it.
 
 ---
 
@@ -319,7 +498,7 @@ You won't push to Speedrun, but you **should** put your own work in a Git repo. 
 
 On the new repo's page, click the green **Code** button and copy the HTTPS URL. Then:
 
-```bash
+```powershell
 cd ~/Projects
 git clone https://github.com/<your-username>/my-internship.git
 cd my-internship
@@ -329,7 +508,7 @@ cd my-internship
 
 Add or edit some files, then:
 
-```bash
+```powershell
 git status                      # see what changed
 git add .                       # stage everything that changed
 git commit -m "Add chapter 2 exercises"
@@ -339,17 +518,19 @@ Write commit messages that say *what* you did: `Add webcam capture script` beats
 
 ### Step 4: Push
 
-```bash
+```powershell
 git push
 ```
 
-The first time, Git will ask you to sign in to GitHub. A browser window usually opens to handle it. (Git for Windows and GitHub Desktop include a credential manager that remembers you after that. On macOS/Linux, the [GitHub CLI](https://cli.github.com/) makes this easy: run `gh auth login` once.)
+The first time, Git will ask you to sign in to GitHub. On Windows, **Git Credential Manager** (installed with Git for Windows) opens a browser window. Sign in there once, and it remembers you after that.
+
+> **Linux / WSL2 / macOS:** Install the [GitHub CLI](https://cli.github.com/) and run `gh auth login` once. (Inside WSL2 you can also reuse the Windows credential manager. See the [Git Credential Manager WSL docs](https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/wsl.md).)
 
 Refresh the repo page on GitHub, and your changes are there.
 
 ### Doing it in VS Code instead
 
-1. Open the **Source Control** panel (`Ctrl+Shift+G` / `Cmd+Shift+G`).
+1. Open the **Source Control** panel (`Ctrl+Shift+G`).
 2. Click **+** next to the files you want to stage (or **+** on "Changes" to stage everything).
 3. Type a message in the box at the top and click **Commit**.
 4. Click **Sync Changes** (or **… → Push**).
@@ -430,11 +611,15 @@ Full reference: [GitHub's Markdown guide](https://docs.github.com/en/get-started
 | Command | What it does |
 |---|---|
 | `pwd` | Print which folder you're in |
-| `ls` (`dir` on Windows CMD) | List files in the current folder |
+| `ls` | List files in the current folder |
 | `cd <folder>` | Move into a folder |
 | `cd ..` | Move up one folder |
 | `mkdir <name>` | Make a new folder |
 | `code .` | Open the current folder in VS Code |
+| `explorer .` | *(Windows)* Open the current folder in File Explorer |
+| `clear` | Clear the terminal screen |
+
+These work in PowerShell, Git Bash, and Linux / WSL2. (The old Windows **Command Prompt** (`cmd`) is different. For example, it uses `dir` instead of `ls`. Stick with PowerShell.)
 
 GitHub also has a printable [Git cheat sheet (PDF)](https://education.github.com/git-cheat-sheet-education.pdf).
 
@@ -442,15 +627,29 @@ GitHub also has a printable [Git cheat sheet (PDF)](https://education.github.com
 
 ## 12. Troubleshooting
 
-### `git: command not found` / `'git' is not recognized`
+### `'git' is not recognized as the name of a cmdlet…` / `git: command not found`
 
-Git isn't installed, or your terminal was open before you installed it. **Close and reopen the terminal** (or VS Code). If that doesn't fix it, reinstall Git ([section 4](#4-installing-git)).
+Git isn't installed, or your terminal was open before you installed it. **Close and reopen PowerShell** (or restart VS Code completely). If that doesn't fix it, reinstall Git ([section 4](#4-installing-git)).
+
+### `warning: LF will be replaced by CRLF`
+
+This is harmless. Windows and Linux use different invisible characters for line endings, and Git converts them automatically. You can ignore it.
+
+### `Filename too long` (Windows)
+
+Windows has a default limit on path length. Tell Git to allow long paths:
+
+```powershell
+git config --global core.longpaths true
+```
+
+Keeping projects in a short path like `C:\Users\<you>\Projects` also helps.
 
 ### `fatal: not a git repository`
 
 You're not inside the repo folder. `cd` into it first:
 
-```bash
+```powershell
 cd ~/Projects/Speedrun
 ```
 
@@ -459,13 +658,13 @@ cd ~/Projects/Speedrun
 You edited a file that I also updated. Pick one:
 
 - **Keep your edits somewhere else, then pull** (safe):
-  ```bash
+  ```powershell
   git stash        # set your changes aside
   git pull         # get my updates
   git stash pop    # bring your changes back (may cause a conflict)
   ```
 - **Throw away your edits and pull** (⚠️ loses your changes to those files):
-  ```bash
+  ```powershell
   git restore .
   git pull
   ```
@@ -476,7 +675,7 @@ To avoid this entirely, keep your work outside the Speedrun folder ([section 8](
 
 Git couldn't combine two sets of changes. Open the file in VS Code. It highlights the conflicting sections and gives you buttons: **Accept Current Change**, **Accept Incoming Change**, or **Accept Both Changes**. Pick one, save, then:
 
-```bash
+```powershell
 git add <file>
 git commit
 ```
@@ -487,7 +686,7 @@ If you're unsure, stop and ask me. Nothing is lost.
 
 GitHub doesn't accept your account password on the command line anymore. Use one of these:
 
-- Let the **Git Credential Manager** browser sign-in handle it (comes with Git for Windows).
+- **Windows:** Let **Git Credential Manager** handle it. It comes with Git for Windows and opens a browser sign-in. If it never appears, reinstall Git with the credential manager option left on.
 - Install the [GitHub CLI](https://cli.github.com/) and run `gh auth login`.
 - Use [GitHub Desktop](https://desktop.github.com/).
 

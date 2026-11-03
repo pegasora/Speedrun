@@ -10,7 +10,7 @@
 
 | Topic | Description |
 |---|---|
-| Installation | Setting up ROS 2 (Linux / Ubuntu recommended) |
+| Installation | Setting up ROS 2 on Ubuntu, which on Windows means running it inside [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) (see the [Git and GitHub Guide](../../Github/README.md#linux-and-wsl2)) |
 | Core concepts | Nodes, topics, services, actions, parameters |
 | Writing nodes in Python | Publishers and subscribers with `rclpy` |
 | Launch files and packages | Organizing and running multi-node systems |

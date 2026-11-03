@@ -21,9 +21,21 @@ I recommend using [uv](https://docs.astral.sh/uv/) to work with Python. It manag
 - [Installation and getting started](https://docs.astral.sh/uv/getting-started/)
 - [Guides](https://docs.astral.sh/uv/guides/)
 
+**Installing on Windows:** open PowerShell and run either of these:
+
+```powershell
+winget install --id=astral-sh.uv -e
+```
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+Then close and reopen PowerShell so `uv` is found. (On Linux / WSL2 and macOS, see the [installation page](https://docs.astral.sh/uv/getting-started/installation/).)
+
 These commands cover most of what you'll need:
 
-```bash
+```powershell
 uv python install            # install a Python version
 uv init my-project           # create a new project folder with a pyproject.toml
 cd my-project
@@ -38,6 +50,12 @@ If you want more guidance or want to see how I use it, let me know.
 ### VSCode IDE
 
 [Visual Studio Code](https://code.visualstudio.com/) is the editor I recommend. It's free and works on Windows, macOS, and Linux.
+
+**Installing on Windows:** download the **User Installer** from the [VS Code download page](https://code.visualstudio.com/download). During setup, leave **Add to PATH** checked and check the **Add "Open with Code" action** boxes. Those let you open folders from the terminal (`code .`) and from right-click in File Explorer. You can also install with winget:
+
+```powershell
+winget install -e --id Microsoft.VisualStudioCode
+```
 
 Recommended extensions:
 
