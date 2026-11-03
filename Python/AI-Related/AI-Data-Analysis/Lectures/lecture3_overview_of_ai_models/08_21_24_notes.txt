@@ -1,0 +1,107 @@
+-- CS504 AIDA MAE --
+
+== 08/21/24 Lecture notes 2 ==
+
+-there is not 1 commonly accepted definition of AI
+
+-techniques fall somewhere between data science and machine learning 
+
+-Machine learning 
+
+    >generally accepted as subset of AI 
+
+    >Often involves data intensive techniques where AI learns to perform on dataset 
+
+-how to organize AI models? 
+
+    >there are 2 links on taxonomy (spelt that wrong lol) in the slides/notes
+
+-data science and AI
+
+    >some people consider Linear Regression an AI model
+
+    >data science <=> AI 
+
+-Data Science 
+
+    >often more statistical analysis
+
+    >the progression of what we will look at
+
+        regresssion --> bayesian --> decision trees -> support vector machines -> random forests -> neural networks -> transformers -> RNN -> CNN
+
+            -> clustering -> autoencoders -> GAN -> Genetic Algorithms -> fuzzy logic (the last 2 are going to be much harder)
+
+-Whats the plan for this class?
+
+    >start with data science/statistics 
+
+    >go into non-nueral network machine learning models
+
+    >spend time on neural networks
+
+    >pivot into generational things 
+
+    >look at the progression above lol 
+
+-Tips
+
+    >the most difficult thing about learning how AI models work is the notation 
+
+-- BASIC CONCEPTS --
+
+    what is a dataset
+    types of machine learning
+    data 
+    model evalutation 
+
+-Datasets
+
+    >For supervised machine learning, generally use a dataset with:
+
+        input data 
+        ...
+        ...
+        ..
+
+    see the slides for the rest of this 
+
+
+-types of machine learning 
+
+1 supervised 
+
+    >you have both feature and outcome data
+
+2 unsupervised 
+
+    >typically only have feature data for this 
+
+
+-Data
+
+    lots of funny memes heheheh
+
+    >model output is only as good as data input 
+
+    >you will need to look at the data first to determine 
+
+        -missing values
+        -outliers 
+        -incorrect inputs
+
+    >generally more data is better..... not always
+
+
+-Overfitting 
+
+    >model generates predictions that are too specific to the training data and do not accurately reflect ....
+
+    >some AI models are more prone to overfitting 
+
+    >really deep neural networks can sometimes "memorize" data
+
+
+-Test, Training and Validation are the 3 sets 
+
+   

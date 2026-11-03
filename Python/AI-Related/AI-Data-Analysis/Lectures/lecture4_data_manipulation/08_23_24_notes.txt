@@ -1,0 +1,17 @@
+-- CS504 AIDA MAE -- 
+
+== 08/23/24 Lecture 3 notes ==
+
+what is linear regression?
+
+    -uses independent x
+    -to predict dependent y
+
+    -y = dependent
+    -x = independent 
+    -m = coefficeint
+    -b = constant added to the result
+
+        >y = mx + b
+
+    
